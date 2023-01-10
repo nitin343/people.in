@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
         currentUser,
         login,
         signup,
-        signOut,
+        logout,
         userInfo
     }
 

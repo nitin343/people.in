@@ -4,6 +4,7 @@ import styles from '../../styles/Home.module.css';
 import { FormControl, FormLabel, FormErrorMessage, FormHelperText, InputRightElement, Input, InputGroup, Button, Text } from '@chakra-ui/react'
 import { useForm } from "react-hook-form";
 import { useAuth } from '../../context/AuthContext';
+import Router from 'next/router';
 
 function LoginForm(props) {
     const [show, setShow] = React.useState(false)
@@ -15,8 +16,11 @@ function LoginForm(props) {
     const handleClick = () => setShow(!show)
 
     useEffect(() => {
-            setErrorMag('')
-    },[isLoggingIn])
+        setErrorMag('')
+        if (currentUser) {
+            Router.push('/')
+        }
+    }, [isLoggingIn, currentUser])
 
     const {
         handleSubmit,

@@ -3,6 +3,9 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import { useAuth } from '../context/AuthContext'
+import { candidate } from '../data/candidates'
+import Router from 'next/router'
+import { useEffect } from 'react'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -10,8 +13,13 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
 
   const {currentUser} = useAuth()
-  console.log(currentUser);
 
+  useEffect(() => {
+      if(currentUser !== null){
+        Router.push('/esd')
+      }
+  },[])
+    
   return (
     <>
       <Head>
