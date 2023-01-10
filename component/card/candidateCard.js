@@ -20,7 +20,7 @@ function CandidateCard(props) {
         <Box display='flex' flexWrap='wrap' >
             {candidateProfile &&
                 candidateProfile.map((card) => (
-                    <Card w='47%' h='50%' my='5px' mx={2} spacing={5}>
+                    <Card width={{base:'100%' , lg:'47%'}} h='50%' my='5px' mx={2} spacing={5}>
                         <CardHeader >
                             <Box w='100%' h='100%' display='flex' flexDirection='row' alignContent='flex-start'>
                                 <VStack w='45%'>
