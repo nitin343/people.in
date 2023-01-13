@@ -1,0 +1,131 @@
+.layoutContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100vh;
+  background-color: #212529;
+  color: white;
+}
+
+
+/* Header */
+.headerContainer {
+  border-bottom: 0.5px solid rgb(175, 172, 172);
+}
+
+.GroupLogo {
+  width: 200px;
+  height: 50px;
+  padding: 10px;
+}
+
+/* Login */
+
+.login_main_container{
+  border: 2px solid white;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login_container {
+  height: 60%;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.textHeader{
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.inputFormsContainer{
+  width: 60%;
+  height: 60%;
+}
+
+
+/* selector.js */
+.company_Name{
+  height: 30%;
+  width: 95%;
+  border: 1px solid #01B3AC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: #01B3AC;
+  margin: 10px 0;
+}
+
+.company_Navigation{
+  border: 1px solid #01B3AC;
+  height: 55%;
+  width: 95%;
+  margin: 10px 0;
+  border-radius:5px;
+}
+
+.company_Navigation_header{
+  height: 20%;
+  border-bottom: 1px solid #01B3AC;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  color: #B5BEC6;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+  font-weight: 500;
+}
+
+.company_Navigation_routes{
+  border-bottom: 1px solid #01B3AC;
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+  justify-content: space-between;
+  color: #212529;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.company_Navigation_signout{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20%;
+}
+
+@media only screen and (min-width: 280px) and  (max-width: 748px){
+  .login_container{
+    width: 95%;
+    border: 1px solid white;
+  }
+
+  .inputFormsContainer{
+    width: 90%;
+  }
+
+  .company_Name{
+    height: 15%;
+  }
+
+  .company_Navigation{
+      height: 75%;
+  }
+}
+
