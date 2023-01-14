@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }) {
     <AuthProvider>
       <ChakraProvider>
         <Layout>
-          <Component {...pageProps} className='custom' /> 
+          <Component {...pageProps} /> 
         </Layout>
       </ChakraProvider>
     </AuthProvider>
