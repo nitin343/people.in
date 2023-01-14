@@ -11,10 +11,40 @@ import {
     IconButton,
     Button,
     Text,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { REMOVE_INT, SET_INT } from '../../Redux/reducers/interviewCandidate';
 
-function TransitionExample({name}) {
+function TransitionExample({name , detailCard}) {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [slColor , setSlColor] = useState('none')
+    const [isShortListed, setIsShortListed] = useState(false);
+    const interviewDetails = useSelector((state) => state.interviewCandidate.data)
+
+    const dispatch = useDispatch();
+
+    
+    useEffect(() => {
+        setIsShortListed(false)
+        setSlColor('none')
+        interviewDetails.forEach((item) => {
+           if(item.id == detailCard.id){
+            setIsShortListed(true)
+            setSlColor('red')
+           }
+        })   
+    },[interviewDetails])
+
+
+   function onProceed (){
+     dispatch(SET_INT(detailCard))
+     onClose();
+   }
+   function onDelete (){
+     dispatch(REMOVE_INT(detailCard))
+     onClose();
+   }
 
     return (
         <>
@@ -25,7 +55,7 @@ function TransitionExample({name}) {
                 aria-label='Send email'
                 title='invite'
                 onClick={onOpen}
-                icon={<EmailIcon />}
+                icon={<EmailIcon color={slColor}/>}
             />
             <Modal
                 isCentered
@@ -44,7 +74,13 @@ function TransitionExample({name}) {
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button variant='ghost'>Proceed</Button>
+                        {
+                        isShortListed 
+                        ?
+                        <Button variant='ghost' onClick={onDelete}>delete</Button>
+                        :
+                        <Button variant='ghost' onClick={onProceed}>Proceed</Button>
+                        }
                     </ModalFooter>
                 </ModalContent>
             </Modal>

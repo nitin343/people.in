@@ -1,44 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Card, Container, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, ButtonGroup, Button, Divider, Box, VStack, IconButton, Flex } from '@chakra-ui/react'
 import { candidate } from '../../data/candidates';
-import {
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-} from '@chakra-ui/react'
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel} from '@chakra-ui/react'
 import { AddIcon, DownloadIcon, EmailIcon, MinusIcon, StarIcon } from '@chakra-ui/icons';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import TransitionExample from '../Modal/shortlistModal';
+import { useDispatch } from 'react-redux';
+import { SET_FAV } from '../../Redux/reducers/faviorites';
+import Router,{ useRouter } from 'next/router';
+import Favourite from '../buttons/favourite';
 
 
 function CandidateCard({candidateDetail}) {
 
     const [candidateProfile, setCandidateProfile] = useState(candidate.data.getApplicant);
+    const [favColor , setFavColor] = useState('none');
+    let boxShadow = 'box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;'
+    const dispatch = useDispatch();
 
     useEffect(() => {
            console.log(candidateDetail);
            setCandidateProfile(candidateDetail)
     },[candidateDetail])
 
-    function openShortlistModal(){
-        console.log('hiiii');
-          return(<><TransitionExample  /></> )
-    }
+    const router = useRouter();
+    const query = router.query;
+    const name = query.page;
+
+   const checkCandidatePresence = () => {
+     if( name == "Favorites"){
+
+     }
+   }
 
     return (
-        <Box display='flex' flexWrap='wrap' alignItems='flex-start' w='full' >
-            {candidateProfile &&
-                candidateProfile.map((card , index) => (
-                    <Card   key={card.id} width={{base:'100%' , lg:'47%'}} h='50%' my='5px' mx={2} spacing={5}>
+        <>
+        { 
+            candidateProfile !== undefined && candidateProfile.length > 0 ?
+            <Box display='flex' flexWrap='wrap' h='70vh' boxShadow='boxShadow' overflowY='scroll' alignItems='flex-start' w='full' >
+           { candidateProfile.map((card , index) => (
+                    <Card   key={card.id} width={{base:'100%' , lg:'47%'}} h='auto' my='10px' mx={2} spacing={5}>
                         <CardHeader >
                             <Box  w='100%' h='100%' display='flex' flexDirection='row' alignContent='flex-start'>
                                 <VStack w='45%'>
                                     <Image
                                         boxSize='100px'
                                         objectFit='cover'
-                                        src={card.profileImage}
+                                        src={card.profileImage ? card.profileImage : '' }
                                         alt='Dan Abramov'
                                     />
                                 </VStack>
@@ -57,16 +65,9 @@ function CandidateCard({candidateDetail}) {
                         <Divider />
                         <CardBody  >
                             <ButtonGroup spacing='2' display='flex' justifyContent='space-evenly'>
-                                <IconButton
-                                    size='sm'
-                                    variant='outline'
-                                    colorScheme='teal'
-                                    aria-label='favorite'
-                                    title='favorite'
-                                    icon={<StarIcon color='red' />}
-                                />
-                               <TransitionExample name={card.firstName} />
-                                <Link href={card.resumeGoogleDrivePath} target="_blank">
+                               <Favourite detailCard={card}/>
+                               <TransitionExample name={card.firstName} detailCard={card} />
+                                <Link href={card.resumeGoogleDrivePath ? card.resumeGoogleDrivePath : '' } target="_blank">
                                     <IconButton
                                         size='sm'
                                         variant='outline'
@@ -105,9 +106,17 @@ function CandidateCard({candidateDetail}) {
                             </Accordion>
                         </CardBody>
                     </Card>
-                ))
+
+                ))}
+            </Box>
+                :
+                <Box  display='flex' justifyContent='center' h='100%' w='100%'>
+               
+                <Text>No <b>{name}</b> candidate</Text>
+               
+                </Box>
             }
-        </Box>
+            </>
     );
 }
 
@@ -117,7 +126,7 @@ export default CandidateCard;
 function AboutSection({ card}) {
     return (
         <>
-            {card &&
+            {card !== undefined ? 
                 (
                     <Container  maxW='container.lg' p={0} >
                         <Flex h="auto" py={0}>
@@ -150,24 +159,28 @@ function AboutSection({ card}) {
                                 }
                                 <VStack py={2} alignItems='flex-start'>
                                     <Heading as='h6' size='xs'>Languages</Heading>
-                                    {card.languages.map((data) =>
+                                    {
+                                    card.languages  ?
+                                    card.languages.map((data) =>
                                     (
                                         <Text> {data.languageName}</Text>
                                     )
-                                    )}
+                                    ) : <></>}
                                 </VStack>
                                 <VStack py={2} alignItems='flex-start'>
                                     <Heading as='h6' size='xs'>Skills</Heading>
-                                    {card.skills.map((data, index) =>
+                                    {
+                                    card.skills  ?
+                                    card.skills.map((data, index) =>
                                     (
                                         <Text> {index + 1}.{data.skillName}({data.skillType})</Text>
                                     )
-                                    )}
+                                    ) : <> </>}
                                 </VStack>
                             </Box>
                         </Flex>
                     </Container>
-                )}
+                ) : <></>}
 
         </>
     )

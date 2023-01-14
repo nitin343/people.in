@@ -9,17 +9,19 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { CUIAutoComplete } from "chakra-ui-autocomplete";
 import { useEffect } from 'react';
 import Link from 'next/link';
-
+import { useSelector } from 'react-redux';
 
 function SelectorPage() {
+
     const [apiData, setApiData] = useState(candidate.data.getApplicant)
     const [candidateDetail, setCandidateDetail] = useState()
     const [pickerItems, setPickerItems] = useState([{ value: 'loading', label: 'loading' }]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [favoriteCandidate, setFavoritecandidate] = useState([])
-    const [interviewCandidate, setInterviewCandidate] = useState([])
-
-
+    const [interviewCandidateData, setInterviewCandidateData] = useState([])
+   
+    const interviewDetail = useSelector((state) => state.interviewCandidate.data)
+    const favioritesDetail = useSelector((state) => state.favorites.data)
     let searchedCandidate = [];
 
     const router = useRouter();
@@ -38,13 +40,13 @@ function SelectorPage() {
             case 'Search':
                 return setCandidateDetail(candidate.data.getApplicant)
             case 'Favorites':
-                return setFavoritecandidate([candidate.data.getApplicant[0]]);
+                return setFavoritecandidate(favioritesDetail);
             case 'Interview':
-                return setInterviewCandidate([candidate.data.getApplicant[2]]);
+                return setInterviewCandidateData(interviewDetail);
             default:
                 return setCandidateDetail(candidate.data.getApplicant);
         }
-    }, [name])
+    }, [name, interviewDetail, favioritesDetail])
 
     const pageRender = () => {
         switch (name) {
@@ -53,7 +55,7 @@ function SelectorPage() {
             case 'Favorites':
                 return <CandidateCard candidateDetail={favoriteCandidate} />
             case 'Interview':
-                return <CandidateCard candidateDetail={interviewCandidate} />
+                return <CandidateCard candidateDetail={interviewCandidateData} />
             default:
                 return <CandidateCard />
         }
@@ -84,7 +86,7 @@ function SelectorPage() {
                 setCandidateDetail(searchedCandidate)
             }
 
-            if(name !== 'Search'){
+            if (name !== 'Search') {
                 Router.push({
                     query: { "page": 'Search' },
                 }, undefined, { scroll: false })
@@ -96,6 +98,7 @@ function SelectorPage() {
         <div>
             <Container maxW="container.xl" p={0}>
                 <Flex direction={{ base: 'column', md: 'row' }} h="100%" py={0} >
+                    {/* {Favname.id} */}
                     <Box
                         w={['100%', '100%', '100%', '50%']}
                         height={{ base: '50vh', md: '100vh' }}
