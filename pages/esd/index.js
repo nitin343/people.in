@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import SelectorPage from './main/selectorPage';
+import SelectorPage from '../../component/section/selectorPage';
 import { withRouter } from 'next/router';
 import { Box, Container, Flex } from '@chakra-ui/react';
 

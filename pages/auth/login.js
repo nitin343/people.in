@@ -18,7 +18,7 @@ function LoginForm(props) {
     useEffect(() => {
         setErrorMag('')
         if (currentUser) {
-            Router.push('/')
+            Router.push({pathname: '/esd' , query: { "page": 'Search' }})
         }
     }, [isLoggingIn, currentUser])
 

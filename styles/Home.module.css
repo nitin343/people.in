@@ -119,5 +119,13 @@
   .inputFormsContainer{
     width: 90%;
   }
+
+  .company_Name{
+    height: 15%;
+  }
+
+  .company_Navigation{
+      height: 75%;
+  }
 }
 
