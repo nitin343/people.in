@@ -36,15 +36,22 @@ function SelectorPage() {
         setPickerItems(candidatName)
     }, [searchData])
 
+    // useEffect(() => {
+    //     setPickerItems([])
+    // },[name])
+
     useEffect(() => {
         switch (name) {
             case 'Search':
+                setSelectedItems([])
                 setSearchData(candidate.data.getApplicant)
                 return setCandidateDetail(candidate.data.getApplicant)
             case 'Favorites':
+                setSelectedItems([])
                 setSearchData(favioritesDetail)
                 return setFavoritecandidate(favioritesDetail);
             case 'Interview':
+                setSelectedItems([])
                 setSearchData(interviewDetail)
                 return setInterviewCandidateData(interviewDetail);
             default:
