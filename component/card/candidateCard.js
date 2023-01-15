@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Card, Container, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, ButtonGroup, Button, Divider, Box, VStack, IconButton, Flex } from '@chakra-ui/react'
+import { Card, Container, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, ButtonGroup, Button, Divider, Box, VStack, IconButton, Flex, keyframes } from '@chakra-ui/react'
 import { candidate } from '../../data/candidates';
 import { Accordion, AccordionItem, AccordionButton, AccordionPanel} from '@chakra-ui/react'
 import { AddIcon, DownloadIcon, EmailIcon, MinusIcon, StarIcon } from '@chakra-ui/icons';
@@ -9,17 +9,28 @@ import { useDispatch } from 'react-redux';
 import { SET_FAV } from '../../Redux/reducers/faviorites';
 import Router,{ useRouter } from 'next/router';
 import Favourite from '../buttons/favourite';
+import styles from '../../styles/Home.module.css'
 
+
+const animation = keyframes`
+from {
+    box-shadow: .8px .9px 3px grey;
+    --webkit-transition:  box-shadow 5s ease-out;
+}
+
+to{
+    box-shadow: 1px 8px 20px grey;
+    --webkit-transition:  box-shadow 5s ease-in;
+}
+`
 
 function CandidateCard({candidateDetail}) {
 
-    const [candidateProfile, setCandidateProfile] = useState(candidate.data.getApplicant);
-    const [favColor , setFavColor] = useState('none');
-    let boxShadow = 'box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;'
-    const dispatch = useDispatch();
+    const [candidateProfile, setCandidateProfile] = useState(candidateDetail);
+    const myAnimation = `${animation} infinite 5s`
 
     useEffect(() => {
-           console.log(candidateDetail);
+        //    console.log(candidateDetail);
            setCandidateProfile(candidateDetail)
     },[candidateDetail])
 
@@ -27,19 +38,13 @@ function CandidateCard({candidateDetail}) {
     const query = router.query;
     const name = query.page;
 
-   const checkCandidatePresence = () => {
-     if( name == "Favorites"){
-
-     }
-   }
-
     return (
         <>
         { 
             candidateProfile !== undefined && candidateProfile.length > 0 ?
-            <Box display='flex' flexWrap='wrap' h='70vh' boxShadow='boxShadow' overflowY='scroll' alignItems='flex-start' w='full' >
+            <Box display='flex' flexWrap='wrap' h='70vh' overflowY='scroll' alignItems='flex-start' w='full' >
            { candidateProfile.map((card , index) => (
-                    <Card   key={card.id} width={{base:'100%' , lg:'47%'}} h='auto' my='10px' mx={2} spacing={5}>
+                    <Card _hover={{animation: myAnimation}}  key={card.id} width={{base:'100%' , lg:'47%'}} h='auto' my='10px' mx={2} spacing={5}>
                         <CardHeader >
                             <Box  w='100%' h='100%' display='flex' flexDirection='row' alignContent='flex-start'>
                                 <VStack w='45%'>

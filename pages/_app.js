@@ -4,7 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { AuthProvider } from '../context/AuthContext'
 import { auth } from '../firebase'
 import { Provider } from 'react-redux'
-import reduxStore from '../redux/store';
+import reduxStore from '../Redux/store';
 
 export default function App({ Component, pageProps }) {
   return (
@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }) {
     <AuthProvider>
       <ChakraProvider>
         <Layout>
-          <Component {...pageProps} className='custom' />
+          <Component {...pageProps} /> 
         </Layout>
       </ChakraProvider>
     </AuthProvider>
