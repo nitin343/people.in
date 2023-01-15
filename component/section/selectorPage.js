@@ -1,6 +1,5 @@
 import { Box, Button, Container, Flex, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-// import NavigationPage from './navigation';
 import NavigationPage from './navigation';
 import CandidateCard from '../card/candidateCard';
 import Router, { useRouter } from "next/router";
@@ -8,18 +7,20 @@ import { candidate } from '../../data/candidates';
 import { ChakraProvider } from "@chakra-ui/react";
 import { CUIAutoComplete } from "chakra-ui-autocomplete";
 import { useEffect } from 'react';
-import Link from 'next/link';
 import { useSelector } from 'react-redux';
+
 
 function SelectorPage() {
 
     const [apiData, setApiData] = useState(candidate.data.getApplicant)
     const [candidateDetail, setCandidateDetail] = useState()
-    const [pickerItems, setPickerItems] = useState([{ value: 'loading', label: 'loading' }]);
+    const [pickerItems, setPickerItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [favoriteCandidate, setFavoritecandidate] = useState([])
     const [interviewCandidateData, setInterviewCandidateData] = useState([])
-   
+    const [searchData, setSearchData] = useState(candidate.data.getApplicant)
+
+
     const interviewDetail = useSelector((state) => state.interviewCandidate.data)
     const favioritesDetail = useSelector((state) => state.favorites.data)
     let searchedCandidate = [];
@@ -29,19 +30,22 @@ function SelectorPage() {
     const name = query.page;
 
     useEffect(() => {
-        let candidatName = candidate.data.getApplicant.map((data) => {
+        let candidatName = searchData.map((data) => {
             return { value: data.firstName, label: data.firstName }
         })
         setPickerItems(candidatName)
-    }, [])
+    }, [searchData])
 
     useEffect(() => {
         switch (name) {
             case 'Search':
+                setSearchData(candidate.data.getApplicant)
                 return setCandidateDetail(candidate.data.getApplicant)
             case 'Favorites':
+                setSearchData(favioritesDetail)
                 return setFavoritecandidate(favioritesDetail);
             case 'Interview':
+                setSearchData(interviewDetail)
                 return setInterviewCandidateData(interviewDetail);
             default:
                 return setCandidateDetail(candidate.data.getApplicant);
@@ -73,23 +77,42 @@ function SelectorPage() {
             }
 
             selectedItems.map((data) => {
-                apiData.map((cd) => {
+                searchData.map((cd) => {
                     if (data.label === cd.firstName) {
                         searchedCandidate.push(cd)
                     }
                 })
             })
 
-            if (changes.selectedItems == 0) {
-                setCandidateDetail(apiData)
-            } else {
-                setCandidateDetail(searchedCandidate)
-            }
 
-            if (name !== 'Search') {
-                Router.push({
-                    query: { "page": 'Search' },
-                }, undefined, { scroll: false })
+            if (changes.selectedItems == 0) {
+                switch (name) {
+                    case 'Search':
+                        setCandidateDetail(apiData)
+                        break;
+                    case 'Favorites':
+                        setFavoritecandidate(favioritesDetail)
+                        break;
+                    case 'Interview':
+                        setInterviewCandidateData(interviewDetail)
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                switch (name) {
+                    case 'Search':
+                        setCandidateDetail(searchedCandidate)
+                        break;
+                    case 'Favorites':
+                        setFavoritecandidate(searchedCandidate)
+                        break;
+                    case 'Interview':
+                        setInterviewCandidateData(searchedCandidate)
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     };

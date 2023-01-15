@@ -110,6 +110,7 @@
   height: 20%;
 }
 
+
 @media only screen and (min-width: 280px) and  (max-width: 748px){
   .login_container{
     width: 95%;
@@ -128,4 +129,6 @@
       height: 75%;
   }
 }
+
+
 
