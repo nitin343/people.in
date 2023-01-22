@@ -28,7 +28,7 @@ function NavigationPage(props) {
                             query: { "page": obj.routerName }, // the data
                         }}>
 
-                            {obj.routerName == name ? (<span> {'->'} </span>) : <></>}
+                            {obj.routerName == name ? (<span > {'->'} </span>) : <></>}
                             {obj.routerName}
 
                         </Link>

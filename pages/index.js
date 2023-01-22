@@ -16,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
       if(currentUser !== null){
-        Router.push('/esd')
+        Router.push({pathname: '/esd' , query: { "page": 'Search' }})
       }
   },[])
     

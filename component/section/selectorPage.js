@@ -1,5 +1,5 @@
 import { Box, Button, Container, Flex, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import NavigationPage from './navigation';
 import CandidateCard from '../card/candidateCard';
 import Router, { useRouter } from "next/router";
@@ -8,19 +8,23 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { CUIAutoComplete } from "chakra-ui-autocomplete";
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useFetchFavorites } from '../../hooks/fetchFavorites';
+import { useAuth } from '../../context/AuthContext';
+import { useFetchInterview } from '../../hooks/fetchInterview';
 
 
 function SelectorPage() {
 
     const [apiData, setApiData] = useState(candidate.data.getApplicant)
     const [candidateDetail, setCandidateDetail] = useState()
-    const [pickerItems, setPickerItems] = useState([]);
+    const [pickerItems, setPickerItems] = useState([{label: 'Loading...'}]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [favoriteCandidate, setFavoritecandidate] = useState([])
     const [interviewCandidateData, setInterviewCandidateData] = useState([])
     const [searchData, setSearchData] = useState(candidate.data.getApplicant)
-
-
+    const {currentUser} = useAuth();
+    const {favorite } = useFetchFavorites();
+    const {interviewData} = useFetchInterview();
     const interviewDetail = useSelector((state) => state.interviewCandidate.data)
     const favioritesDetail = useSelector((state) => state.favorites.data)
     let searchedCandidate = [];
@@ -30,15 +34,19 @@ function SelectorPage() {
     const name = query.page;
 
     useEffect(() => {
+         setFavoritecandidate(favorite)
+        },[name, favioritesDetail])
+
+    useEffect(() => {
+         setInterviewCandidateData(interviewData)
+        },[name, interviewDetail])
+
+    useEffect(() => {
         let candidatName = searchData.map((data) => {
             return { value: data.firstName, label: data.firstName }
         })
         setPickerItems(candidatName)
-    }, [searchData])
-
-    // useEffect(() => {
-    //     setPickerItems([])
-    // },[name])
+    }, [name, searchData, selectedItems ])
 
     useEffect(() => {
         switch (name) {
@@ -48,16 +56,16 @@ function SelectorPage() {
                 return setCandidateDetail(candidate.data.getApplicant)
             case 'Favorites':
                 setSelectedItems([])
-                setSearchData(favioritesDetail)
-                return setFavoritecandidate(favioritesDetail);
+                setSearchData(favorite)
+                return setFavoritecandidate(favorite);
             case 'Interview':
                 setSelectedItems([])
-                setSearchData(interviewDetail)
-                return setInterviewCandidateData(interviewDetail);
+                setSearchData(interviewData)
+                return setInterviewCandidateData(interviewData);
             default:
                 return setCandidateDetail(candidate.data.getApplicant);
         }
-    }, [name, interviewDetail, favioritesDetail])
+    }, [name, interviewData, favorite])
 
     const pageRender = () => {
         switch (name) {
@@ -68,16 +76,12 @@ function SelectorPage() {
             case 'Interview':
                 return <CandidateCard candidateDetail={interviewCandidateData} />
             default:
-                return <CandidateCard />
+                 Router.push({pathname: '/esd' , query: { "page": 'Search' }})
+                 break;
         }
     }
 
-    const handleCreateItem = (item) => {
-        setPickerItems((curr) => [...curr, item]);
-        setSelectedItems((curr) => [...curr, item]);
-    };
-
-    const handleSelectedItemsChange = (selectedItems, changes) => {
+    const handleSelectedItemsChange = (selectedItems, changes) => { 
         if (changes) {
             if (changes.selectedItems) {
                 setSelectedItems(selectedItems);
@@ -91,6 +95,7 @@ function SelectorPage() {
                 })
             })
 
+            console.log(searchedCandidate, 'searchedCandidate');
 
             if (changes.selectedItems == 0) {
                 switch (name) {
@@ -98,10 +103,10 @@ function SelectorPage() {
                         setCandidateDetail(apiData)
                         break;
                     case 'Favorites':
-                        setFavoritecandidate(favioritesDetail)
+                        setFavoritecandidate(favorite)
                         break;
                     case 'Interview':
-                        setInterviewCandidateData(interviewDetail)
+                        setInterviewCandidateData(interviewData)
                         break;
                     default:
                         break;
@@ -146,12 +151,12 @@ function SelectorPage() {
                         alignItems="flex-start"
                     >
                         <ChakraProvider>
-                            <Box px={8} py={4}>
+                            <Box px={8} py={4} >
                                 <CUIAutoComplete
                                     label="Search for your preferred Candidates"
                                     placeholder="Candidate Name"
-                                    onCreateItem={handleCreateItem}
-                                    items={pickerItems ? pickerItems : ''}
+                                    // onCreateItem={handleCreateItem}
+                                    items={pickerItems}
                                     tagStyleProps={{
                                         rounded: "full",
                                         pt: 1,

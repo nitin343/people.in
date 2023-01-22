@@ -73,7 +73,7 @@
 
 .company_Navigation{
   border: 1px solid #01B3AC;
-  height: 55%;
+  height: 40%;
   width: 95%;
   margin: 10px 0;
   border-radius:5px;
@@ -86,8 +86,8 @@
   align-items: center;
   justify-content: flex-start;
   padding: 1rem;
-  color: #B5BEC6;
-  font-size: 0.9rem;
+  color: #ABB5BE;
+  font-size: 14px;
   letter-spacing: 0.2px;
   font-weight: 500;
 }
@@ -98,9 +98,10 @@
   flex-direction: column;
   height: 60%;
   justify-content: space-between;
-  color: #212529;
+  color: #343A40;
+  font-size: 15px;
   font-weight: 600;
-  padding: 1rem;
+  padding: 0.4rem;
 }
 
 .company_Navigation_signout{
@@ -110,8 +111,14 @@
   height: 20%;
 }
 
+/* card desgin */
 
-@media only screen and (min-width: 280px) and  (max-width: 748px){
+:hover.cardMain{
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 260px) and  (max-width: 767px){
   .login_container{
     width: 95%;
     border: 1px solid white;
@@ -126,7 +133,7 @@
   }
 
   .company_Navigation{
-      height: 75%;
+      height: 85%;
   }
 }
 

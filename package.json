@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.4.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.5",
     "@next/font": "13.1.1",
     "@reduxjs/toolkit": "^1.9.1",
     "chakra-ui-autocomplete": "^1.4.5",
