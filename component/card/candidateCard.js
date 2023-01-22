@@ -12,6 +12,7 @@ import Favourite from '../buttons/favourite';
 import styles from '../../styles/Home.module.css'
 import { useFetchFavorites } from '../../hooks/fetchFavorites';
 import { Spinner } from '@chakra-ui/react'
+import ProfileModal from '../Modal/profileModal';
 
 
 function CandidateCard({ candidateDetail }) {
@@ -65,9 +66,12 @@ function CandidateCard({ candidateDetail }) {
                                     </Box>
                                 </CardHeader>
                                 <CardBody >
-                                    <Stack mt='1' spacing='3'>
+                                    <Stack mt='1' spacing='3' flexDirection='row'>
+                                      <Box flex='1'>
                                         <Heading color='#152536' fontSize='20px'> {card.firstName} {card.lastName}</Heading>
                                         <Text fontSize='16px' color='#68717A'>{card.Specialization}</Text>
+                                        </Box>
+                                         <ProfileModal card={card} />
                                     </Stack>
                                 </CardBody>
                                 <Divider />
