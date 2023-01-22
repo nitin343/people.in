@@ -72,7 +72,7 @@
 }
 
 .company_Navigation{
-  border: 1px solid #01B3AC;
+  border: 1px solid pink;
   height: 40%;
   width: 95%;
   margin: 10px 0;
@@ -129,11 +129,11 @@
   }
 
   .company_Name{
-    height: 15%;
+    height: 150px; 
   }
 
   .company_Navigation{
-      height: 85%;
+      height: 220px;
   }
 }
 
