@@ -20,7 +20,6 @@ export function useFetchInterview(props) {
 
     useEffect(() => {
         async function fetchData() {
-            console.log('hi interviewData runnin');
             try {
             
                 setTimeout(async () => {

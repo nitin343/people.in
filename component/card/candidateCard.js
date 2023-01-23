@@ -23,29 +23,23 @@ function CandidateCard({ candidateDetail }) {
     const [pageSize, setpageSize] = useState(4)
 
     const { loading } = useFetchFavorites()
-    console.log(loading);
 
     useEffect(() => {
-        //    console.log(candidateDetail);
         setCandidateProfile(candidateDetail)
     }, [candidateDetail])
 
-    // console.log(pageSize < candidateProfile.length , 'okkkk');
-    // console.log(candidateProfile.length , '123');
-    // console.log(pageSize , '1234');
+   
 
     const router = useRouter();
     const query = router.query;
     const name = query.page;
 
     const fetchMoreData = () => {
-        // a fake async api call like which sends
-        // 20 more records in 1.5 secs
         setTimeout(() => {
-            if(pageSize < candidateProfile.length){
-            setpageSize(name => name + 4)
-           }
-        }, 1500);
+            if (pageSize < candidateProfile.length) {
+                setpageSize(name => name + 4)
+            }
+        }, 1000);
     };
 
     return (
@@ -149,33 +143,7 @@ function CandidateCard({ candidateDetail }) {
                                         <CardBody py={0}>
                                             <TransitionExample name={card.firstName} detailCard={card} />
                                         </CardBody>
-                                        {/* <CardBody>
-                            <Accordion allowMultiple>
-                                <AccordionItem>
-                                    {({ isExpanded }) => (
-                                        <>
-                                            <h2>
-                                                <AccordionButton>
-                                                    <Box as="span" flex='1' color='blue' textAlign='left'>
-                                                        Candidate Details
-                                                    </Box>
-                                                    {isExpanded ? (
-                                                        <MinusIcon fontSize='12px' />
-                                                    ) : (
-                                                        <AddIcon fontSize='12px' />
-                                                    )}
-                                                </AccordionButton >
-                                            </h2>
-                                            <AccordionPanel pb={4}>
-                                                <AboutSection card={card} />
-                                            </AccordionPanel>
-                                        </>
-                                    )}
-                                </AccordionItem>
-                            </Accordion>
-                        </CardBody> */}
                                     </Card>
-
                                 ))}
                             </InfiniteScroll>
                         </Stack>
@@ -190,67 +158,3 @@ function CandidateCard({ candidateDetail }) {
 }
 
 export default CandidateCard;
-
-
-function AboutSection({ card }) {
-    return (
-        <>
-            {card !== undefined ?
-                (
-                    <Container maxW='container.lg' p={0} >
-                        <Flex h="auto" py={0}>
-                            <Box color='#68717A'>
-                                <VStack flexDirection='column' alignItems='flex-start'>
-                                    <Heading as='h4' size='sm'>About</Heading>
-                                </VStack>
-                                <VStack py={2} alignItems='flex-start'>
-                                    <Heading as='h6' size='xs'>DOB</Heading>
-                                    <Text> {card.dateOfBirth}</Text>
-                                </VStack>
-                                <VStack py={2} alignItems='flex-start'>
-                                    <Heading as='h6' size='xs'>Degree</Heading>
-                                    <Text>
-                                        <span>- {card.degree}</span>
-                                    </Text>
-                                </VStack>
-                                {card.experience &&
-                                    (
-                                        <VStack py={2} alignItems='flex-start'>
-                                            <Heading as='h6' size='xs'>Experience</Heading>
-                                            <Text>
-                                                Proffessional experience- {card.experience.pExperience}
-                                            </Text>
-                                            <Text>
-                                                relavent experience- {card.experience.relavent}
-                                            </Text>
-                                        </VStack>
-                                    )
-                                }
-                                <VStack py={2} alignItems='flex-start'>
-                                    <Heading as='h6' size='xs'>Languages</Heading>
-                                    {
-                                        card.languages ?
-                                            card.languages.map((data) =>
-                                            (
-                                                <Text> {data.languageName}</Text>
-                                            )
-                                            ) : <></>}
-                                </VStack>
-                                <VStack py={2} alignItems='flex-start'>
-                                    <Heading as='h6' size='xs'>Skills</Heading>
-                                    {
-                                        card.skills ?
-                                            card.skills.map((data, index) =>
-                                            (
-                                                <Text> {index + 1}.{data.skillName}({data.skillType})</Text>
-                                            )
-                                            ) : <> </>}
-                                </VStack>
-                            </Box>
-                        </Flex>
-                    </Container>
-                ) : <></>}
-
-        </>
-    )
-}

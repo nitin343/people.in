@@ -3,17 +3,12 @@ import { Select } from '@chakra-ui/react'
 import { useDispatch } from 'react-redux';
 import { SET_FILTER_EXP, SET_FILTER_SPEC } from '../../Redux/reducers/candidateFilterReducer';
 
-function FilterSelect({ placeHolder, optionValue, SelectName }) {
-  console.log(optionValue);
-  
-
+function FilterSelect({ placeHolder, optionValue, SelectName }) {  
   const dispatch = useDispatch();
 
 
 
   const handleChange = (event , name) => {
-    console.log(event.target.value);
-    console.log(name);
     switch (name) {
       case 'specialization':
         dispatch(SET_FILTER_SPEC(event.target.value))

@@ -15,7 +15,6 @@ const interviewCandidateSlice = createSlice({
        }
     }
 })
-console.log(interviewCandidateSlice);
 
 export const {SET_INT , REMOVE_INT} = interviewCandidateSlice.actions
 export default interviewCandidateSlice.reducer

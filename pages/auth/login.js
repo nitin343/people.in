@@ -36,7 +36,6 @@ function LoginForm(props) {
             } catch (error) {
                 setErrorMag(error.message);
             }
-            console.log(currentUser, 'login');
         } else {
             try {
                 await signup(values.email, values.password)

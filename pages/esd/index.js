@@ -7,7 +7,6 @@ import { Box, Container, Flex } from '@chakra-ui/react';
 function EsdHome({ router }) {
     // const {asPath , pathname} = useRouter;
 
-    console.log(router, 'pathname');
     return (
         <Container maxW="container.xl" pb={5} >
             <Box w='100%'>

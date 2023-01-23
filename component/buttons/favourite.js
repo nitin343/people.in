@@ -18,8 +18,6 @@ function Favourite({ detailCard }) {
     const dispatch = useDispatch();
     const { error, favorite } = useFetchFavorites();
     const favioritesDetail = useSelector((state) => state.favorites.data)
-    // const {favorite} = useFetchFavorites();
-    console.log(favorite, 'favorite123');
 
     useEffect(() => {
         setTimeout(() => {
@@ -36,7 +34,6 @@ function Favourite({ detailCard }) {
         }, 1000);
     }, [favorite])
 
-    // console.log(favorite , 'fetching from db');
 
     async function dispatchAction(params) {
         event.stopPropagation();

@@ -130,11 +130,24 @@ function SelectorPage() {
                         filterData.push(data)
                     }
                 })
+            }else{
+                switch (name) {
+                    case 'Favorites':
+                        filterData = favorite
+                        break;
+                    case 'Favorites':
+                        filterData = interviewData
+                        break;
+                    default:
+                        break;
+                }
             }
+            
+            // console.log(filterDa);
             searchedCandidate = filterData;
         }
 
-        if (searchedCandidate.length == 0 || searchName=='searchBar' && selectedItems == 0) {
+        if (searchedCandidate.length == 0 && searchName=='searchBar' && selectedItems == 0) {
             switch (name) {
                 case 'Search':
                     setCandidateDetail(apiData)

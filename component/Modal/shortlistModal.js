@@ -19,7 +19,6 @@ function TransitionExample({ name, detailCard }) {
     const { loading} = useFetchFavorites();
     const [loadingData, setLoadingData] = useState(false)
     const {interviewData} = useFetchInterview();
-    console.log(interviewData , 'interview1234');
 
     useEffect(() => {
         setTimeout(() => {

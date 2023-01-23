@@ -2,24 +2,25 @@ import { Box, Divider, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Select } from '@chakra-ui/react'
 import FilterSelect from '../Select/filterSelcet';
+import { Router, useRouter } from 'next/router';
+
 
 
 
 function CandidateFilter({searchData}) {
-    const skills = ['HTML','CSS','JS']
     const [specialization , setSpecialization] = useState([]);
     const [experience , setExperience] = useState([]);
-    // const specialization = ['fullstack', 'frontend']
 
+    const router = useRouter();
+    const query = router.query;
+    const name = query.page;
  
-    console.log(searchData,'searchData');
 
     useEffect(() => {
         let res = [];
         let exp = [];
         setExperience([]);
         setSpecialization([])
-        console.log('running');
         for (let i = searchData.length; i--;){
                if (res.indexOf(searchData[i].Specialization) < 0) {
                 res.push(searchData[i].Specialization);
@@ -32,7 +33,7 @@ function CandidateFilter({searchData}) {
                 setSpecialization(res)
                 setExperience(exp)
             }
-    },[searchData])
+    },[searchData, name])
     
     return (
         <Box w='95%' borderRadius={2} border='1px solid pink'>
