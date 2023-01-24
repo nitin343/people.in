@@ -4,8 +4,9 @@ import { Box, Button, Center } from '@chakra-ui/react'
 import { useAuth } from '../../context/AuthContext';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
+import CandidateFilter from './CandidatrFilter';
 
-function NavigationPage(props) {
+function NavigationPage({searchData}) {
     const router = useRouter();
     const query = router.query;
     const name = query.page;
@@ -14,8 +15,10 @@ function NavigationPage(props) {
 
     const navLinkname = [{ routerName: 'Search', id: 1 }, { routerName: 'Favorites', id: 2 }, { routerName: 'Interview', id: 3 }]
 
+    console.log(searchData, 'searchData searchData');
+
     return (
-        <Box w='100%' h='100%'>
+        <Box w='100%' h='100%'  >
             <div className={`${styles.company_Name}`}>Company Name</div>
             <div className={`${styles.company_Navigation}`}>
                 <div className={`${styles.company_Navigation_header}`}>
@@ -28,7 +31,7 @@ function NavigationPage(props) {
                             query: { "page": obj.routerName }, // the data
                         }}>
 
-                            {obj.routerName == name ? (<span> {'->'} </span>) : <></>}
+                            {obj.routerName == name ? (<span > {'->'} </span>) : <></>}
                             {obj.routerName}
 
                         </Link>
@@ -41,6 +44,9 @@ function NavigationPage(props) {
                     }} >Sign Out</Button>
                 </div>
             </div>
+            <Box my={5}> <CandidateFilter searchData={searchData}/></Box>
+           
+
         </Box>
     );
 }
