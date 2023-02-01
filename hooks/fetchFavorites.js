@@ -29,7 +29,11 @@ export function useFetchFavorites() {
                     const docSnap = await getDoc(docRef)
                     if (docSnap.exists()) {
                         var objfav = await docSnap.data().favoriteCandidate
-                        var favData = await Object.values(objfav)
+                        if(objfav){
+                            var favData = await Object.values(objfav)
+                        }else{
+                             var favData = []
+                        }
                         setFavorite(favData)
                         setLoading(false)
                     }
@@ -39,7 +43,7 @@ export function useFetchFavorites() {
             } finally {
                 setTimeout(() => {
                     setLoading(false)
-                },1100)
+                }, 1100)
             }
         }
         fetchData();

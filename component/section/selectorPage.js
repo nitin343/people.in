@@ -1,4 +1,4 @@
-import { Box, Button, Container, filter, Flex, VStack } from '@chakra-ui/react';
+import { Box, Button, Container, filter, Flex, Spinner, VStack } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import NavigationPage from './navigation';
 import CandidateCard from '../card/candidateCard';
@@ -12,16 +12,19 @@ import { useFetchFavorites } from '../../hooks/fetchFavorites';
 import { useAuth } from '../../context/AuthContext';
 import { useFetchInterview } from '../../hooks/fetchInterview';
 import CandidateFilter from './CandidatrFilter';
+import axios from 'axios';
 
-function SelectorPage() {
+function SelectorPage({ apiDataQl }) {
 
-    const [apiData, setApiData] = useState(candidate.data.getApplicant)
+    const [apiData, setApiData] = useState([])
     const [candidateDetail, setCandidateDetail] = useState()
     const [pickerItems, setPickerItems] = useState([{ label: 'Loading...' }]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [favoriteCandidate, setFavoritecandidate] = useState([])
     const [interviewCandidateData, setInterviewCandidateData] = useState([])
-    const [searchData, setSearchData] = useState(candidate.data.getApplicant)
+    const [searchData, setSearchData] = useState([])
+    const [filterData, setFilterData] = useState([])
+    const [apiLoading, setApiLoading] = useState(false)
     const { currentUser } = useAuth();
     const { favorite } = useFetchFavorites();
     const { interviewData } = useFetchInterview();
@@ -31,6 +34,11 @@ function SelectorPage() {
     let searchedCandidate = [];
     let previousFilter = filterCandidateDetail;
 
+    useEffect(() => {
+        fetchApiData()
+    }, [])
+
+
 
     const router = useRouter();
     const query = router.query;
@@ -38,25 +46,23 @@ function SelectorPage() {
 
     useEffect(() => {
         setFavoritecandidate(favorite)
+        setFilterData(favorite)
     }, [name, favioritesDetail])
 
     useEffect(() => {
         setInterviewCandidateData(interviewData)
+        setFilterData(interviewData)
     }, [name, interviewDetail])
 
     useEffect(() => {
         let candidatName = searchData.map((data) => {
-            return { value: data.firstName, label: data.firstName }
+            return { value: data.firstName + ' ' + data.lastName, label: data.firstName + ' ' + data.lastName }
         })
         setPickerItems(candidatName)
     }, [name, searchData, selectedItems])
 
     useEffect(() => {
         switch (name) {
-            case 'Search':
-                setSelectedItems([])
-                setSearchData(candidate.data.getApplicant)
-                return setCandidateDetail(candidate.data.getApplicant)
             case 'Favorites':
                 setSelectedItems([])
                 setSearchData(favorite)
@@ -66,9 +72,21 @@ function SelectorPage() {
                 setSearchData(interviewData)
                 return setInterviewCandidateData(interviewData);
             default:
-                return setCandidateDetail(candidate.data.getApplicant);
+                break;
         }
     }, [name, interviewData, favorite])
+
+    useEffect(() => {
+        switch (name) {
+            case 'Search':
+                setSelectedItems([])
+                setFilterData(apiData)
+                setSearchData(apiData)
+                return setCandidateDetail(apiData)
+            default:
+                break;
+        }
+    }, [name, apiData])
 
     const pageRender = () => {
         switch (name) {
@@ -84,6 +102,51 @@ function SelectorPage() {
         }
     }
 
+    const fetchApiData = async () => {
+        setApiLoading(true);
+        return await axios({
+            url: 'http://peoplein.ap-northeast-2.elasticbeanstalk.com/graphql',
+            method: 'post',
+            headers: {
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImhhYnNpZGEtcGVvcGxlaW4iLCJleHAiOjE2NzU3MDIwMTksImlhdCI6MTY3NTA5NzIxOX0.tD0vvtfmVsDrkRyeg8gYTPCjDebZWxVYxEq1sSKUI7A',
+                'Content-Type': 'application/json',
+                'Cookie': 'JSESSIONID=06D772B442CD0CF27D04FFE2F4848013'
+
+            },
+            data: {
+                query: `{
+                    getAllApplicants {
+                        id
+                        firstName
+                        lastName
+                        country
+                        gender
+                        visa
+                        dateOfBirth
+                        degree
+                        yearsOfExperience
+                        resumeGoogleDrivePath
+                        languages{
+                            languageName
+                        }
+                        skills{
+                            skillName
+                            skillType
+                        }
+                        
+                    }
+                }`
+            }
+        }).then((result) => {
+            setApiData(result.data.data.getAllApplicants)
+            setApiLoading(false)
+            console.log(apiDataQl, 'apiDataapiData');
+        }).catch((error) => {
+            console.log(error.error, 'error message');
+            setApiLoading(false)
+
+        });
+    }
 
 
     const handleSelectedItemsChange = (selectedItems, changes, searchName) => {
@@ -98,58 +161,158 @@ function SelectorPage() {
 
                 selectedItems.map((data) => {
                     searchData.map((cd) => {
-                        if (data.label === cd.firstName) {
+                        if (data.label === cd.firstName + ' ' + cd.lastName) {
                             searchedCandidate.push(cd)
                         }
                     })
                 })
             }
+            setCandidateDetail(searchedCandidate)
         }
 
         if (searchName == 'filters') {
+
             let filterData = [];
-            if (filterCandidateDetail.specialitaion && filterCandidateDetail.experience) {
+            // if (filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) {
 
-                searchData.map((data) => {
-                    if (data.Specialization == filterCandidateDetail.specialitaion && data.yearsOfExperience == filterCandidateDetail.experience) {
-                        filterData.push(data)
-                    }
-                })
-                   
-            } else if (filterCandidateDetail.specialitaion) {
+            //     searchData.map((data) => {
 
-                searchData.map((data) => {
-                    if (data.Specialization == filterCandidateDetail.specialitaion) {
-                        filterData.push(data)
-                    }
-                })
+            //         if (data.Specialization == filterCandidateDetail.specialitaion || data.yearsOfExperience == filterCandidateDetail.experience) {
+            //             if (filterCandidateDetail.skills) {
+            //                 data.skills.map((item) => {
+            //                     if (item.skillName == filterCandidateDetail.skills) {
+            //                         if (filterCandidateDetail.languages) {
+            //                             data.languages.map((item) => {
+            //                                 if (item.languageName == filterCandidateDetail.languages) {
+            //                                     filterData.push(data)
+            //                                 }
+            //                             })
+            //                         } else {
+            //                             filterData.push(data)
+            //                         }
+            //                     }
+            //                 })
+            //             } else {
+            //                 filterData.push(data)
+            //             }
+            //         }
+            //     })
 
-            } else if (filterCandidateDetail.experience) {
-                searchData.map((data) => {
-                    if (data.yearsOfExperience == filterCandidateDetail.experience) {
-                        filterData.push(data)
+            // } else if (filterCandidateDetail.specialitaion) {
+
+            //     searchData.map((data) => {
+            //         if (data.Specialization == filterCandidateDetail.specialitaion) {
+            //             filterData.push(data)
+            //         }
+            //     })
+
+            // } else if (filterCandidateDetail.experience) {
+            //     searchData.map((data) => {
+            //         if (data.yearsOfExperience == filterCandidateDetail.experience) {
+            //             filterData.push(data)
+            //         }
+            //     })
+
+            // } else if (filterCandidateDetail.skills) {
+            //     searchData.map((data) => {
+            //         data.skills.map((item) => {
+            //             if (item.skillName == filterCandidateDetail.skills) {
+            //                 filterData.push(data)
+            //             }
+            //         })
+            //     })
+            // } else if (filterCandidateDetail.languages) {
+            //     searchData.map((data) => {
+            //         data.languages.map((item) => {
+            //             if (item.languageName == filterCandidateDetail.languages) {
+            //                 filterData.push(data)
+            //             }
+            //         })
+            //     })
+            // }
+            // else {
+            //     switch (name) {
+            //         case 'Favorites':
+            //             filterData = favorite
+            //             break;
+            //         case 'Interview':
+            //             filterData = interviewData
+            //             break;
+            //         case 'Search': 
+            //              filterData = apiData
+            //         default:
+            //             break;
+            //     }
+            // }
+
+            if (filterCandidateDetail.experience || filterCandidateDetail.skills || filterCandidateDetail.languages) {
+
+                if (filterCandidateDetail.experience) {
+                    // filterData = [];
+                    let filterExperience = []
+                    if (filterData.length > 0 && filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) filterExperience = filterData
+                    else if (filterCandidateDetail.experience) filterExperience = searchData
+                    else filterExperience = searchData;
+
+                    filterExperience.map((data) => {
+                        if (data.yearsOfExperience == filterCandidateDetail.experience) {
+                            return filterData.push(data)
+                        }
+                    })
+                }
+
+                if (filterCandidateDetail.skills) {
+                    console.log(filterData , 'filter data');
+                    let filterSkills = []
+                    if ( filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) filterSkills = filterData
+                    else filterSkills = searchData
+
+                    if (filterSkills.length > 0) {
+                        console.log(filterSkills, 'filter data 1' );
+                        filterData = [];
+                        filterSkills.map((data) => {
+                            data.skills.map((item) => {
+                                if (item.skillName == filterCandidateDetail.skills) {
+                                    filterData.push(data)
+                                }
+                            })
+                        })
+                        console.log(filterData, 'filter data 2');
                     }
-                })
-            }else{
-                switch (name) {
-                    case 'Favorites':
-                        filterData = favorite
-                        break;
-                    case 'Favorites':
-                        filterData = interviewData
-                        break;
-                    default:
-                        break;
+                }
+
+
+                if (filterCandidateDetail.languages) {
+                    let filterLanguages = []
+                    if (filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) filterLanguages = filterData
+                    else filterLanguages = searchData
+
+                    if (filterLanguages.length > 0) {
+                        filterData = [];
+                        filterLanguages.map((data) => {
+                            data.languages.map((item) => {
+                                if (item.languageName == filterCandidateDetail.languages) {
+                                    filterData.push(data)
+                                }
+                            })
+                        })
+                    }
                 }
             }
-            
-            // console.log(filterDa);
+
+            if(filterData.length === 0){
+                console.log('iam empty');
+            }
+
+            console.log(filterData);
             searchedCandidate = filterData;
+            // setSearchData(filterData)
         }
 
-        if (searchedCandidate.length == 0 && searchName=='searchBar' && selectedItems == 0) {
+        if (searchedCandidate.length == 0 && searchName == 'searchBar' && selectedItems == 0) {
             switch (name) {
                 case 'Search':
+
                     setCandidateDetail(apiData)
                     break;
                 case 'Favorites':
@@ -164,6 +327,7 @@ function SelectorPage() {
         } else {
             switch (name) {
                 case 'Search':
+                    // setSearchData(searchedCandidate)
                     setCandidateDetail(searchedCandidate)
                     break;
                 case 'Favorites':
@@ -182,62 +346,81 @@ function SelectorPage() {
     return (
         <Container maxW="container.xl" p={0} >
             <Flex direction={{ base: 'column', md: 'row' }} h="100%" py={0} >
-                {/* {Favname.id} */}
-                <Box
-                    w={['100%', '100%', '100%', '50%']}
-                    height={{ base: 'auto', md: '100vh' }}
-                    p={4}
-                    my={1}
-                    spacing={10}
-                    alignItems="flex-start"
-                    
-                >
-                    <NavigationPage searchData={searchData} />
 
-                    <Button width='95%' colorScheme='blue' size='md' onClick={() => handleSelectedItemsChange('', '', 'filters')}>Search Filter</Button>
-                </Box>
-                <Box
-                    width={{ base: "100%", lg: 'full' }}
-                    h="full"
-                    p={{ base: '0', lg: '4' }}
-                    spacing={10}
-                    alignItems="flex-start"
-                    mt={2}
-                >
-                    <ChakraProvider>
-                        <Box px={8} py={4} >
-                            <CUIAutoComplete
-                                label="Search for your preferred Candidates"
-                                placeholder="Candidate Name"
-                                // onCreateItem={handleCreateItem}
-                                items={pickerItems}
-                                tagStyleProps={{
-                                    rounded: "full",
-                                    pt: 1,
-                                    pb: 2,
-                                    px: 2,
-                                    fontSize: "1rem"
-                                }}
-                                selectedItems={selectedItems}
-                                onSelectedItemsChange={(changes) =>
-                                    handleSelectedItemsChange(changes.selectedItems, changes, 'searchBar')
-                                }
-                            />
-                        </Box>
-                    </ChakraProvider>
+                {apiData &&
 
-                    <VStack height={{ base: 'auto', md: '100%' }} display='flex'>
+                    (
                         <>
-                            {
-                                pageRender()
-                            }
-                        </>
-                    </VStack>
+                            <Box
+                                w={['100%', '100%', '100%', '50%']}
+                                height={{ base: 'auto', md: '100vh' }}
+                                p={4}
+                                my={1}
+                                spacing={10}
+                                alignItems="flex-start"
 
-                </Box>
+                            >
+                                <NavigationPage searchData={searchData} filterData={filterData} />
+                                <Button width={{base:'100%', md:'95%'}} mt={{ base: '0px', md: '30px' }} colorScheme='blue' size='md' onClick={() => handleSelectedItemsChange('', '', 'filters')}>Search Filter</Button>
+                            </Box>
+                            <Box
+                                width={{ base: "100%", lg: 'full' }}
+                                h="full"
+                                p={{ base: '0', lg: '4' }}
+                                spacing={10}
+                                alignItems="flex-start"
+                                mt={2}
+                            >
+
+                                <VStack color='#8F6AF8' height='50px' borderRadius='2px' bgColor='#F8F9FA' justifyContent='center' alignItems='flex-start' border='1px solid pink' mt='2' px='2'>
+                                    <span>
+                                        Home / {name} {selectedItems.length !== 0 ? <span> / Result</span> : <></>}
+                                    </span>
+                                </VStack>
+
+                                <ChakraProvider>
+                                    <Box py={4} >
+                                        <CUIAutoComplete
+                                            label="Search for your preferred Candidates"
+                                            placeholder="Candidate Name"
+                                            // onCreateItem={handleCreateItem}
+                                            items={pickerItems}
+                                            tagStyleProps={{
+                                                rounded: "full",
+                                                pt: 1,
+                                                pb: 2,
+                                                px: 2,
+                                                fontSize: "1rem"
+                                            }}
+                                            selectedItems={selectedItems}
+                                            onSelectedItemsChange={(changes) =>
+                                                handleSelectedItemsChange(changes.selectedItems, changes, 'searchBar')
+                                            }
+                                        />
+                                    </Box>
+                                </ChakraProvider>
+
+                                <VStack height={{ base: 'auto', md: '100%' }} display='flex'>
+                                    <>
+                                        {
+                                            pageRender()
+                                        }
+                                    </>
+                                </VStack>
+
+                            </Box>
+
+                        </>
+                    )}
+                {/* {Favname.id} */}
             </Flex>
         </Container>
     );
 }
 
 export default SelectorPage;
+
+
+
+
+

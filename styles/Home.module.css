@@ -7,7 +7,6 @@
   color: white;
 }
 
-
 /* Header */
 .headerContainer {
   border-bottom: 0.5px solid rgb(175, 172, 172);
@@ -21,7 +20,7 @@
 
 /* Login */
 
-.login_main_container{
+.login_main_container {
   border: 2px solid white;
   height: 100%;
   width: 100%;
@@ -40,7 +39,7 @@
   flex-direction: column;
 }
 
-.textHeader{
+.textHeader {
   height: 20%;
   display: flex;
   justify-content: center;
@@ -52,59 +51,60 @@
   color: #ffffff;
 }
 
-.inputFormsContainer{
+.inputFormsContainer {
   width: 60%;
   height: 60%;
 }
 
-
 /* selector.js */
-.company_Name{
-  height: 30%;
+.company_Name {
+  height: 125px;
   width: 95%;
-  border: 1px solid #01B3AC;
+  border: 1px solid #01b3ac;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  background-color: #01B3AC;
+  background-color: #01b3ac;
   margin: 10px 0;
 }
 
-.company_Navigation{
+.company_Navigation {
   border: 1px solid pink;
   height: 40%;
   width: 95%;
   margin: 10px 0;
-  border-radius:5px;
+  border-radius: 5px;
 }
 
-.company_Navigation_header{
+.company_Navigation_header {
   height: 20%;
-  border-bottom: 1px solid #01B3AC;
+  border-bottom: 1px solid #01b3ac;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 1rem;
-  color: #ABB5BE;
+  color: #abb5be;
   font-size: 14px;
   letter-spacing: 0.2px;
   font-weight: 500;
 }
 
-.company_Navigation_routes{
-  border-bottom: 1px solid #01B3AC;
+.company_Navigation_routes {
+  border-bottom: 1px solid #01b3ac;
   display: flex;
   flex-direction: column;
   height: 60%;
-  justify-content: space-between;
-  color: #343A40;
+  color: #343a40;
   font-size: 15px;
   font-weight: 600;
-  padding: 0.4rem;
 }
 
-.company_Navigation_signout{
+.company_Navigation_routes_Name {
+  padding: 0.8rem 0.6rem;
+}
+
+.company_Navigation_signout {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,29 +113,29 @@
 
 /* card desgin */
 
-:hover.cardMain{
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+:hover.cardMain {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
+    rgba(0, 0, 0, 0.05) 0px 5px 10px;
   cursor: pointer;
 }
 
-@media only screen and (min-width: 260px) and  (max-width: 767px){
-  .login_container{
+@media only screen and (min-width: 260px) and (max-width: 767px) {
+  .login_container {
     width: 95%;
     border: 1px solid white;
   }
 
-  .inputFormsContainer{
+  .inputFormsContainer {
     width: 90%;
   }
 
-  .company_Name{
-    height: 150px; 
+  .company_Name {
+    height: 125px;
+    width: 100%;
   }
 
-  .company_Navigation{
-      height: 220px;
+  .company_Navigation {
+    height: 220px;
+    width: 100%;
   }
 }
-
-
-

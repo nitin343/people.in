@@ -7,7 +7,8 @@ import { useAuth } from '../../context/AuthContext';
 import { db } from '../../firebase';
 import { useFetchFavorites } from '../../hooks/fetchFavorites';
 import { REMOVE_FAV, SET_FAV } from '../../Redux/reducers/faviorites';
-import { Spinner } from '@chakra-ui/react'
+import { Spinner } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react'
 
 
 function Favourite({ detailCard }) {
@@ -19,9 +20,13 @@ function Favourite({ detailCard }) {
     const { error, favorite } = useFetchFavorites();
     const favioritesDetail = useSelector((state) => state.favorites.data)
 
+    const toast = useToast()
+    const toastIdRef = React.useRef();
+
     useEffect(() => {
         setTimeout(() => {
             setIsFav(false)
+        
             favorite.forEach((item) => {
                 if (item.id == detailCard.id) {
                     setLoading(false)
@@ -30,12 +35,13 @@ function Favourite({ detailCard }) {
                     setLoading(false)
                 }
             })
+        
             setLoading(false)
-        }, 1000);
+        }, 0);
     }, [favorite])
 
 
-    async function dispatchAction(params) {
+    async function dispatchAction(event) {
         event.stopPropagation();
         setLoading(true)
         if (isFav) {
@@ -46,6 +52,7 @@ function Favourite({ detailCard }) {
                     [detailCard.id]: deleteField(),
                 }
             }, { merge: true })
+            removeToast();
         } else {
             dispatch(SET_FAV(detailCard))
             const useRef = doc(db, 'user', currentUser.uid)
@@ -54,8 +61,18 @@ function Favourite({ detailCard }) {
                     [detailCard.id]: detailCard,
                 }
             }, { merge: true })
+            addToast()
         }
     }
+
+    function addToast() {
+        toastIdRef.current = toast({ description: `added ${detailCard.firstName} to favorite list` ,  status: 'success', })
+    }
+
+    function removeToast(){
+        toastIdRef.current = toast({description: `removed ${detailCard.firstName} from favorite` , status: 'info'})
+    }
+
 
     return (
         <>
@@ -68,6 +85,7 @@ function Favourite({ detailCard }) {
                         isFav ?
                             (
                                 <MinusIcon fontSize='12px' />
+                                
                             ) : (
                                 <AddIcon fontSize='12px' />
                             )

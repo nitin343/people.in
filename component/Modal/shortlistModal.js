@@ -32,7 +32,7 @@ function TransitionExample({ name, detailCard }) {
                 }
             })
             setLoadingData(false)
-        }, 1000);
+        }, 0);
     }, [ interviewData])
 
 
@@ -59,7 +59,7 @@ function TransitionExample({ name, detailCard }) {
             }
         },{merge: true})
         onClose();
-    }
+    }    
 
     return (
         <>

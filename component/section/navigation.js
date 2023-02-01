@@ -6,7 +6,7 @@ import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
 import CandidateFilter from './CandidatrFilter';
 
-function NavigationPage({searchData}) {
+function NavigationPage({searchData, filterData}) {
     const router = useRouter();
     const query = router.query;
     const name = query.page;
@@ -15,6 +15,8 @@ function NavigationPage({searchData}) {
 
     const navLinkname = [{ routerName: 'Search', id: 1 }, { routerName: 'Favorites', id: 2 }, { routerName: 'Interview', id: 3 }]
 
+    // console.log(searchData, 'searchData searchData');
+
     return (
         <Box w='100%' h='100%'  >
             <div className={`${styles.company_Name}`}>Company Name</div>
@@ -22,27 +24,27 @@ function NavigationPage({searchData}) {
                 <div className={`${styles.company_Navigation_header}`}>
                     NAVIGATION
                 </div>
-                <div className={`${styles.company_Navigation_routes}`}>
+                <div  className={`${styles.company_Navigation_routes}`}>
                     {navLinkname && navLinkname.map((obj, index) => (
-                        <Link scroll={false} href={{
+                        <Link className={`${styles.company_Navigation_routes_Name}`} style={obj.routerName == name ? {'backgroundColor': '#7749F8', 'color':'white'} : {}} scroll={false} href={{
                             pathname: '/esd',
                             query: { "page": obj.routerName }, // the data
                         }}>
 
-                            {obj.routerName == name ? (<span > {'->'} </span>) : <></>}
+                            {/* {obj.routerName == name ? (<span > {'->'} </span>) : <></>} */}
                             {obj.routerName}
 
                         </Link>
                     ))}
                 </div>
                 <div className={`${styles.company_Navigation_signout}`}>
-                    <Button width='90%' colorScheme='red' size='sm' onClick={async () => {
+                    <Button width='100%' h='100%' backgroundColor='#EBE5FC' borderRadius={0} justifyContent='flex-start' size='sm' onClick={async () => {
                         await logout();
                         Router.push('/auth/login')
                     }} >Sign Out</Button>
                 </div>
             </div>
-            <Box my={5}> <CandidateFilter searchData={searchData}/></Box>
+            <Box my={5}> <CandidateFilter searchData={filterData}/></Box>
            
 
         </Box>

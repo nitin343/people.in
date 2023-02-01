@@ -71,7 +71,7 @@ function CandidateCard({ candidateDetail }) {
                             >
 
                                 {candidateProfile.slice(0, pageSize).map((card, index) => (
-                                    <Card className={styles.cardMain} key={card.id} width={{ base: '100%', lg: '47%' }} h='auto' my='10px' mx={2} spacing={5}>
+                                    <Card className={styles.cardMain} key={card.id} width={{ base: '100%', lg: '47%' }} h='40%' my='10px' mx={2} spacing={5}>
                                         <CardHeader p={0}>
                                             <Box w='100%' h='100%' display='flex' flexDirection='row' alignContent='flex-start'>
                                                 <VStack w='45%' h='170px' pr={2}>
@@ -79,7 +79,7 @@ function CandidateCard({ candidateDetail }) {
                                                         boxSize='100%'
                                                         // h='200px'
                                                         objectFit='cover'
-                                                        src={card.profileImage ? card.profileImage : ''}
+                                                        src={card.profileImage ? card.profileImage : 'https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144847501.jpg'}
                                                         alt='Dan Abramov'
                                                     />
                                                 </VStack>

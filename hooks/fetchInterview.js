@@ -28,7 +28,11 @@ export function useFetchInterview(props) {
                     const docSnap = await getDoc(docRef)
                     if (docSnap.exists()) {
                         var objfav = await docSnap.data().interviewCandidate
-                        var favData = await Object.values(objfav)
+                        if(objfav){
+                            var favData = await Object.values(objfav)
+                        }else{
+                            var favData = []
+                        }
                         setInterviewData(favData)
                         setLoading(false)
                     }
