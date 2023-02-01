@@ -110,7 +110,7 @@ function SelectorPage({ apiDataQl }) {
             headers: {
                 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImhhYnNpZGEtcGVvcGxlaW4iLCJleHAiOjE2NzU3MDIwMTksImlhdCI6MTY3NTA5NzIxOX0.tD0vvtfmVsDrkRyeg8gYTPCjDebZWxVYxEq1sSKUI7A',
                 'Content-Type': 'application/json',
-                'Cookie': 'JSESSIONID=06D772B442CD0CF27D04FFE2F4848013'
+                
 
             },
             data: {
@@ -300,11 +300,6 @@ function SelectorPage({ apiDataQl }) {
                 }
             }
 
-            if(filterData.length === 0){
-                console.log('iam empty');
-            }
-
-            console.log(filterData);
             searchedCandidate = filterData;
             // setSearchData(filterData)
         }
