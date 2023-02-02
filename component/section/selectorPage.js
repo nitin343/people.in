@@ -140,10 +140,8 @@ function SelectorPage({ apiDataQl }) {
         }).then((result) => {
             setApiData(result.data.data.getAllApplicants)
             setApiLoading(false)
-            console.log(apiDataQl, 'apiDataapiData');
         }).catch((error) => {
-            console.log(error.error, 'error message');
-            setApiLoading(false)
+            setApiData(candidate.data.getApplicant)
 
         });
     }

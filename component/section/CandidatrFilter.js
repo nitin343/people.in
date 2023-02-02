@@ -60,9 +60,9 @@ function CandidateFilter({searchData}) {
                 <Text>Filter</Text>
             </HStack>
             <Divider />
-             <Stack my={2} >
+             {/* <Stack my={2} >
                   <FilterSelect placeHolder={'Specialization'} optionValue={specialization} SelectName={'specialization'}/>
-             </Stack>
+             </Stack> */}
              <Stack my={2}>
                   <FilterSelect  placeHolder={'Experience'} optionValue={experience} SelectName={'experience'}/>
              </Stack>
