@@ -110,7 +110,7 @@ function SelectorPage({ apiDataQl }) {
             headers: {
                 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImhhYnNpZGEtcGVvcGxlaW4iLCJleHAiOjE2NzU4ODI1NjUsImlhdCI6MTY3NTI3Nzc2NX0.Ut-U20NgEqIMBRmpDTnjaOtpstTvMuFr3DAV-zVAqbw',
                 'Content-Type': 'application/json',
-                
+
 
             },
             data: {
@@ -170,7 +170,7 @@ function SelectorPage({ apiDataQl }) {
 
         if (searchName == 'filters') {
 
-            let filterData = [];
+            let filterData = searchData;
             // if (filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) {
 
             //     searchData.map((data) => {
@@ -248,25 +248,27 @@ function SelectorPage({ apiDataQl }) {
                 if (filterCandidateDetail.experience) {
                     // filterData = [];
                     let filterExperience = []
-                    if (filterData.length > 0 && filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) filterExperience = filterData
-                    else if (filterCandidateDetail.experience) filterExperience = searchData
+                    if (filterCandidateDetail.skills || filterCandidateDetail.languages || (filterCandidateDetail.languages && filterCandidateDetail.skills)) filterExperience = filterData
+                    // else if (filterCandidateDetail.experience) filterExperience = searchData
                     else filterExperience = searchData;
-
-                    filterExperience.map((data) => {
-                        if (data.yearsOfExperience == filterCandidateDetail.experience) {
-                            return filterData.push(data)
-                        }
-                    })
+                    if (filterExperience.length > 0) {
+                        filterData = []
+                        filterExperience.map((data) => {
+                            if (data.yearsOfExperience == filterCandidateDetail.experience) {
+                                return filterData.push(data)
+                            }
+                        })
+                    }
                 }
 
                 if (filterCandidateDetail.skills) {
-                    console.log(filterData , 'filter data');
+                    console.log(filterData, 'filter data');
                     let filterSkills = []
-                    if ( filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) filterSkills = filterData
+                    if (filterCandidateDetail.experience || filterCandidateDetail.languages || (filterCandidateDetail.experience && filterCandidateDetail.languages)) filterSkills = filterData
                     else filterSkills = searchData
 
                     if (filterSkills.length > 0) {
-                        console.log(filterSkills, 'filter data 1' );
+                        console.log(filterSkills, 'filter data 1');
                         filterData = [];
                         filterSkills.map((data) => {
                             data.skills.map((item) => {
@@ -281,10 +283,11 @@ function SelectorPage({ apiDataQl }) {
 
 
                 if (filterCandidateDetail.languages) {
+                    console.log('filterData', filterData);
                     let filterLanguages = []
-                    if (filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) filterLanguages = filterData
+                    if (filterData.length > 0 || filterCandidateDetail.experience || filterCandidateDetail.skills || (filterCandidateDetail.experience && filterCandidateDetail.skills)) filterLanguages = filterData
                     else filterLanguages = searchData
-
+                    console.log('filtet language', filterLanguages);
                     if (filterLanguages.length > 0) {
                         filterData = [];
                         filterLanguages.map((data) => {
@@ -354,7 +357,7 @@ function SelectorPage({ apiDataQl }) {
 
                             >
                                 <NavigationPage searchData={searchData} filterData={filterData} />
-                                <Button width={{base:'100%', md:'95%'}} mt={{ base: '0px', md: '30px' }} colorScheme='blue' size='md' onClick={() => handleSelectedItemsChange('', '', 'filters')}>Search Filter</Button>
+                                <Button width={{ base: '100%', md: '95%' }} mt={{ base: '0px', md: '0px' }} colorScheme='blue' size='md' onClick={() => handleSelectedItemsChange('', '', 'filters')}>Search Filter</Button>
                             </Box>
                             <Box
                                 width={{ base: "100%", lg: 'full' }}
