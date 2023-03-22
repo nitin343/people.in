@@ -108,7 +108,7 @@ function SelectorPage({ apiDataQl }) {
             url: 'http://peoplein.ap-northeast-2.elasticbeanstalk.com/graphql',
             method: 'post',
             headers: {
-                'Content-Security-Policy':'upgrade-insecure-requests'
+                'Content-Security-Policy':'upgrade-insecure-requests',
                 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImhhYnNpZGEtcGVvcGxlaW4iLCJleHAiOjE2ODAwOTUzMTYsImlhdCI6MTY3OTQ5MDUxNn0.OEk51Ce2eQctbG8imtcpXe3_orhHmPOztFrFlYhJR5o',
                 'Content-Type': 'application/json',
 
