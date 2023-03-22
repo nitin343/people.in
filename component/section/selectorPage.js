@@ -172,77 +172,6 @@ function SelectorPage({ apiDataQl }) {
         if (searchName == 'filters') {
 
             let filterData = searchData;
-            // if (filterCandidateDetail.experience && filterCandidateDetail.skills && filterCandidateDetail.languages) {
-
-            //     searchData.map((data) => {
-
-            //         if (data.Specialization == filterCandidateDetail.specialitaion || data.yearsOfExperience == filterCandidateDetail.experience) {
-            //             if (filterCandidateDetail.skills) {
-            //                 data.skills.map((item) => {
-            //                     if (item.skillName == filterCandidateDetail.skills) {
-            //                         if (filterCandidateDetail.languages) {
-            //                             data.languages.map((item) => {
-            //                                 if (item.languageName == filterCandidateDetail.languages) {
-            //                                     filterData.push(data)
-            //                                 }
-            //                             })
-            //                         } else {
-            //                             filterData.push(data)
-            //                         }
-            //                     }
-            //                 })
-            //             } else {
-            //                 filterData.push(data)
-            //             }
-            //         }
-            //     })
-
-            // } else if (filterCandidateDetail.specialitaion) {
-
-            //     searchData.map((data) => {
-            //         if (data.Specialization == filterCandidateDetail.specialitaion) {
-            //             filterData.push(data)
-            //         }
-            //     })
-
-            // } else if (filterCandidateDetail.experience) {
-            //     searchData.map((data) => {
-            //         if (data.yearsOfExperience == filterCandidateDetail.experience) {
-            //             filterData.push(data)
-            //         }
-            //     })
-
-            // } else if (filterCandidateDetail.skills) {
-            //     searchData.map((data) => {
-            //         data.skills.map((item) => {
-            //             if (item.skillName == filterCandidateDetail.skills) {
-            //                 filterData.push(data)
-            //             }
-            //         })
-            //     })
-            // } else if (filterCandidateDetail.languages) {
-            //     searchData.map((data) => {
-            //         data.languages.map((item) => {
-            //             if (item.languageName == filterCandidateDetail.languages) {
-            //                 filterData.push(data)
-            //             }
-            //         })
-            //     })
-            // }
-            // else {
-            //     switch (name) {
-            //         case 'Favorites':
-            //             filterData = favorite
-            //             break;
-            //         case 'Interview':
-            //             filterData = interviewData
-            //             break;
-            //         case 'Search': 
-            //              filterData = apiData
-            //         default:
-            //             break;
-            //     }
-            // }
 
             if (filterCandidateDetail.experience || filterCandidateDetail.skills || filterCandidateDetail.languages) {
 
@@ -263,13 +192,13 @@ function SelectorPage({ apiDataQl }) {
                 }
 
                 if (filterCandidateDetail.skills) {
-                    console.log(filterData, 'filter data');
+                   
                     let filterSkills = []
                     if (filterCandidateDetail.experience || filterCandidateDetail.languages || (filterCandidateDetail.experience && filterCandidateDetail.languages)) filterSkills = filterData
                     else filterSkills = searchData
 
                     if (filterSkills.length > 0) {
-                        console.log(filterSkills, 'filter data 1');
+                       
                         filterData = [];
                         filterSkills.map((data) => {
                             data.skills.map((item) => {
@@ -278,17 +207,17 @@ function SelectorPage({ apiDataQl }) {
                                 }
                             })
                         })
-                        console.log(filterData, 'filter data 2');
+                       
                     }
                 }
 
 
                 if (filterCandidateDetail.languages) {
-                    console.log('filterData', filterData);
+                   
                     let filterLanguages = []
                     if (filterData.length > 0 || filterCandidateDetail.experience || filterCandidateDetail.skills || (filterCandidateDetail.experience && filterCandidateDetail.skills)) filterLanguages = filterData
                     else filterLanguages = searchData
-                    console.log('filtet language', filterLanguages);
+                   
                     if (filterLanguages.length > 0) {
                         filterData = [];
                         filterLanguages.map((data) => {
