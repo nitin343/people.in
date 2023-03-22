@@ -105,7 +105,7 @@ function SelectorPage({ apiDataQl }) {
     const fetchApiData = async () => {
         setApiLoading(true);
         return await axios({
-            url: 'http://peoplein.ap-northeast-2.elasticbeanstalk.com/graphql',
+            url: ' https://cors-everywhere.herokuapp.com/http://peoplein.ap-northeast-2.elasticbeanstalk.com/graphql',
             method: 'post',
             headers: {
                 'Content-Security-Policy':'upgrade-insecure-requests',
